@@ -87,6 +87,15 @@ namespace ProjetoTerra.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Não foi possível atualizar o webhook.
+        /// </summary>
+        internal static string UpdateHookFailed {
+            get {
+                return ResourceManager.GetString("UpdateHookFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Usuário ou senha incorretos.
         /// </summary>
         internal static string UserNotFound {

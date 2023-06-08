@@ -30,4 +30,7 @@
     <data name="CreateHookFailed" xml:space="preserve">
         <value>Não foi possível criar o webhook</value>
     </data>
+    <data name="UpdateHookFailed" xml:space="preserve">
+        <value>Não foi possível atualizar o webhook</value>
+    </data>
 </root>

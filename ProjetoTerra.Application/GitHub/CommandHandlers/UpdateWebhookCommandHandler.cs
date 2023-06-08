@@ -31,7 +31,19 @@ public class UpdateWebhookCommandHandler : IRequestHandler<UpdateWebhookCommand,
             Events = request.Events
         };
 
-        await _githubClient.Repository.Hooks.Edit(repositoryOwnerName, request.RepositoryName, request.WebhookId, hookUpdate);
+        try
+        {
+            var hook = await _githubClient.Repository.Hooks.Edit(repositoryOwnerName, request.RepositoryName, request.WebhookId, hookUpdate);
+        
+            if (hook == null)
+            {
+                throw new InvalidActionException(ResourceHelper.UpdateHookFailed);
+            }
+        }
+        catch (Exception)
+        {
+            throw new InvalidActionException(ResourceHelper.UpdateHookFailed);
+        }
 
         return true;
     }

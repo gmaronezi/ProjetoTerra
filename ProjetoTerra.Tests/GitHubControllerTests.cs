@@ -29,7 +29,7 @@ public class GitHubControllerTests
             _mediatorMock.Setup(x => x.Send(It.IsAny<CreateGitRepositoryCommand>(), default(CancellationToken)))
                 .ReturnsAsync(expectedResult);
 
-            var result = await _controller.CreateRepository(RepositoryName, command);
+            var result = await _controller.CreateRepository(command);
 
             Assert.IsType<OkObjectResult>(result);
         }

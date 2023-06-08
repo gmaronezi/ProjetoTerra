@@ -171,10 +171,24 @@ namespace ProjetoTerra.API
                             }
                         });
                     });
+                    
+                    services.AddCors(options =>
+                    {
+                        options.AddDefaultPolicy(builder =>
+                        {
+                            // CORS
+                            builder.AllowAnyOrigin()
+                                .AllowAnyMethod()
+                                .AllowAnyHeader();
+                        });
+                    });
                 })
                 .Configure(app =>
                 {
                     var env = app.ApplicationServices.GetService<IWebHostEnvironment>();
+                    
+                    app.UseCors();
+                    
                     if (env.IsDevelopment())
                     {
                         app.UseDeveloperExceptionPage();

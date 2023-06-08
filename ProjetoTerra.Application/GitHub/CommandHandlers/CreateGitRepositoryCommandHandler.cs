@@ -23,13 +23,20 @@ public class CreateGitRepositoryCommandHandler : IRequestHandler<CreateGitReposi
             Private = request.Private
         };
 
-        var response = await _githubClient.Repository.Create(newRepo);
+        try
+        {
+            var response = await _githubClient.Repository.Create(newRepo);
 
-        if (response == null)
+            if (response == null)
+            {
+                throw new InvalidActionException(ResourceHelper.CreateRepositoryFailed);
+            }
+        }
+        catch (Exception)
         {
             throw new InvalidActionException(ResourceHelper.CreateRepositoryFailed);
         }
-
+       
         return true;
     }
 }

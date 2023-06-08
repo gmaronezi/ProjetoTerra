@@ -33,9 +33,16 @@ public class CreateWebhookCommandHandler : IRequestHandler<CreateWebhookCommand,
             Secret = request.Secret
         };
 
-        var hook = await _githubClient.Repository.Hooks.Create(repositoryId.Value, webhookConfig);
+        try
+        {
+            var hook = await _githubClient.Repository.Hooks.Create(repositoryId.Value, webhookConfig);
 
-        if (hook == null)
+            if (hook == null)
+            {
+                throw new InvalidActionException(ResourceHelper.CreateHookFailed);
+            }
+        }
+        catch (Exception)
         {
             throw new InvalidActionException(ResourceHelper.CreateHookFailed);
         }

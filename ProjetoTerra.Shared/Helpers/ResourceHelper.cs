@@ -6,4 +6,5 @@ public class ResourceHelper
     public static string RepositoryNotFound => Resources.RepositoryNotFound;
     public static string CreateRepositoryFailed => Resources.CreateRepositoryFailed;
     public static string CreateHookFailed => Resources.CreateHookFailed;
+    public static string UpdateHookFailed => Resources.UpdateHookFailed;
 }

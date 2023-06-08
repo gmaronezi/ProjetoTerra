@@ -20,12 +20,12 @@ public class GitHubController : ControllerBase
         _mediator = mediator;
     }
     
-    [HttpPost("repository/{repositoryName}")]
+    [HttpPost("repository")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateRepository([FromRoute] string repositoryName, [FromBody] CreateGitRepositoryCommand command)
+    public async Task<IActionResult> CreateRepository([FromBody] CreateGitRepositoryCommand command)
     {
-        var result = await _mediator.Send(command.SetRepositoryName(repositoryName));
+        var result = await _mediator.Send(command);
 
         return Ok(result);
     }
@@ -43,7 +43,10 @@ public class GitHubController : ControllerBase
     [HttpPut("webhook/{repositoryName}/{webHookId}")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> UpdateWebhook([FromRoute(Name = "repositoryName")] string repositoryName, [FromRoute(Name = "webHookId")] int webHookId, [FromBody] UpdateWebhookCommand command)
+    public async Task<IActionResult> UpdateWebhook(
+        [FromRoute(Name = "repositoryName")] string repositoryName, 
+        [FromRoute(Name = "webHookId")] int webHookId, 
+        [FromBody] UpdateWebhookCommand command)
     {
         command.SetIdRepositoryName(webHookId, repositoryName);
         var result = await _mediator.Send(command);
