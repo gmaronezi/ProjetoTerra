@@ -132,7 +132,7 @@ namespace ProjetoTerra.API
                     {
                         var githubClient = new GitHubClient(new ProductHeaderValue("ProjetoTerra"))
                         {
-                            Credentials = new Credentials(configuration.GetValue<string>("GIT_TOKEN"))
+                            Credentials = new Credentials(configuration.GetValue<string>("GitToken"))
                         };
 
                         return githubClient;

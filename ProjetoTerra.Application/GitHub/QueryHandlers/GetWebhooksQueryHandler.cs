@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Octokit;
 using ProjetoTerra.Application.GitHub.Queries;
+using ProjetoTerra.Application.GitHub.ViewModels;
 using ProjetoTerra.Shared.Exceptions;
 using ProjetoTerra.Shared.Helpers;
 
 namespace ProjetoTerra.Application.GitHub.QueryHandlers;
 
-public class GetWebhooksQueryHandler : IRequestHandler<GetWebhooksQuery, List<RepositoryHook>>
+public class GetWebhooksQueryHandler : IRequestHandler<GetWebhooksQuery, List<WebhookViewModel>?>
 {
     private readonly GitHubClient _githubClient;
 
@@ -15,9 +16,9 @@ public class GetWebhooksQueryHandler : IRequestHandler<GetWebhooksQuery, List<Re
         _githubClient = githubClient;
     }
     
-    public async Task<List<RepositoryHook>> Handle(GetWebhooksQuery request, CancellationToken cancellationToken)
+    public async Task<List<WebhookViewModel>?> Handle(GetWebhooksQuery request, CancellationToken cancellationToken)
     {
-        // Pesquisar o repositório pelo nome
+        // Pesquisa o repositório pelo nome
         var repositories = await _githubClient.Repository.GetAllForCurrent();
         var repositoryId = repositories.FirstOrDefault(r => r.Name.Equals(request.RepositoryName))?.Id;
 
@@ -34,6 +35,15 @@ public class GetWebhooksQueryHandler : IRequestHandler<GetWebhooksQuery, List<Re
         };
         
         var hooks = await _githubClient.Repository.Hooks.GetAll(repositoryId.Value, paginationOptions);
-        return (List<RepositoryHook>)hooks;
+
+        return hooks?.Select(h => new WebhookViewModel()
+        {
+            Name = h.Name,
+            Url = h.Url,
+            Events = h.Events,
+            Active = h.Active,
+            Configs = h.Config,
+            WebhookId = h.Id
+        }).ToList();
     }
 }

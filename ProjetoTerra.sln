@@ -23,6 +23,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoTerra.Shared", "Proj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoTerra.Shared.HttpServices", "ProjetoTerra.Shared.HttpServices\ProjetoTerra.Shared.HttpServices.csproj", "{226C2F67-DB4C-4A26-BC61-FE47AC0A5C92}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{0A6511E1-7F18-44FF-8BB0-D607A0CB3379}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjetoTerra.Tests", "ProjetoTerra.Tests\ProjetoTerra.Tests.csproj", "{C33AAA0C-D5F5-40F0-B337-A693663C3482}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BD74BDE4-A3FA-46F5-AA4F-CE3C74F15993}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +47,7 @@ Global
 		{50DE093E-00F1-4609-AEF2-3F49DEF7C2FD} = {2899F41D-7657-473E-8849-F233044C7380}
 		{6092CA9C-75FB-4697-BC5E-EF8E72B5BE8E} = {B054C5CC-7700-4079-81BE-17C329FC0C38}
 		{226C2F67-DB4C-4A26-BC61-FE47AC0A5C92} = {B054C5CC-7700-4079-81BE-17C329FC0C38}
+		{C33AAA0C-D5F5-40F0-B337-A693663C3482} = {0A6511E1-7F18-44FF-8BB0-D607A0CB3379}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{F4950833-2074-4D65-A936-60242BCDEEC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -64,5 +74,9 @@ Global
 		{226C2F67-DB4C-4A26-BC61-FE47AC0A5C92}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{226C2F67-DB4C-4A26-BC61-FE47AC0A5C92}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{226C2F67-DB4C-4A26-BC61-FE47AC0A5C92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C33AAA0C-D5F5-40F0-B337-A693663C3482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C33AAA0C-D5F5-40F0-B337-A693663C3482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C33AAA0C-D5F5-40F0-B337-A693663C3482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C33AAA0C-D5F5-40F0-B337-A693663C3482}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
