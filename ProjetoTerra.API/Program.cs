@@ -1,13 +1,8 @@
 ﻿using System.Text;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MongoDB.Driver;
@@ -20,14 +15,14 @@ using ProjetoTerra.Infra.Data;
 using ProjetoTerra.Infra.Data.Seeders;
 using ProjetoTerra.Shared.HttpServices.Configurations;
 
-namespace ProjetoTerra.API
+namespace Api
 {
     public class Program
     {
         public static async Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-            
+
             // Seed
             using (var scope = host.Services.CreateScope())
             {
@@ -37,7 +32,7 @@ namespace ProjetoTerra.API
                 var seeder = new MongoSeeder(dbContext.MongoDatabase, passwordHasher, userManager);
                 await seeder.SeedUserTest();
             }
-            
+
             await host.RunAsync();
         }
 
@@ -61,17 +56,17 @@ namespace ProjetoTerra.API
                     services.AddScoped<UserManager<ApplicationUser>>();
 
                     var configuration = hostContext.Configuration;
-                    
+
                     var databaseName = configuration.GetSection("MongoDB")["DatabaseName"];
                     var connectionString = configuration.GetConnectionString("MongoDbConnection");
-                    
+
                     // Configurar conexão com o MongoDB
                     services.AddSingleton<ApplicationDbContext>(_ =>
                     {
                         var client = new MongoClient(connectionString);
                         return new ApplicationDbContext(client.GetDatabase(databaseName));
                     });
-                    
+
                     services.AddSingleton<IMongoClient>(new MongoClient(connectionString));
                     services.AddTransient<IMongoDatabase>(provider =>
                     {
@@ -84,7 +79,7 @@ namespace ProjetoTerra.API
                         var database = provider.GetService<IMongoDatabase>();
                         return new CustomMongoUserStore(database);
                     });
-                    
+
                     services.AddSingleton<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
 
                     services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -94,13 +89,13 @@ namespace ProjetoTerra.API
                         .AddUserStore<CustomMongoUserStore>()
                         .AddRoleStore<RoleStore<IdentityRole>>()
                         .AddDefaultTokenProviders();
-                    
+
                     services.AddScoped<IRoleStore<IdentityRole>>(provider =>
                     {
                         var database = provider.GetService<IMongoDatabase>();
                         return new CustomRoleStore(database);
                     });
-                    
+
                     // Configs Octokit
                     services.AddScoped<GitHubClient>(sp =>
                     {
@@ -111,7 +106,7 @@ namespace ProjetoTerra.API
 
                         return githubClient;
                     });
-                    
+
                     // Configurar autenticação JWT
                     var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
                     services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
@@ -138,7 +133,7 @@ namespace ProjetoTerra.API
                             };
                         });
 
-                    
+
                     // Configurar Swagger
                     services.AddSwaggerGen(c =>
                     {
@@ -172,7 +167,7 @@ namespace ProjetoTerra.API
                             }
                         });
                     });
-                    
+
                     services.AddCors(options =>
                     {
                         options.AddDefaultPolicy(builder =>
@@ -187,33 +182,27 @@ namespace ProjetoTerra.API
                 .Configure(app =>
                 {
                     var env = app.ApplicationServices.GetService<IWebHostEnvironment>();
-                    
+
                     app.UseCors();
-                    
+
                     if (env.IsDevelopment())
                     {
                         app.UseDeveloperExceptionPage();
                     }
-                    
+
                     app.UseCustomExceptionHandler();
 
                     app.UseRouting();
                     app.UseAuthentication();
                     app.UseAuthorization();
 
-                    app.UseEndpoints(endpoints =>
-                    {
-                        endpoints.MapControllers();
-                    });
-                    
+                    app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
                     app.UseApiVersioning();
-                    
+
                     app.UseSwagger();
 
-                    app.UseSwaggerUI(c =>
-                    {
-                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Terra v1");
-                    });
+                    app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "Projeto Terra v1"); });
                 });
     }
 }

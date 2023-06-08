@@ -30,6 +30,7 @@ public class GitHubControllerTests
                 Description = "Teste",
                 Private = true
             };
+            
             var expectedResult = true;
             _mediatorMock.Setup(x => x.Send(command, default(CancellationToken)))
                 .ReturnsAsync(expectedResult);
@@ -42,7 +43,21 @@ public class GitHubControllerTests
         [Fact]
         public async void CreateWebhook_ValidRequest_ReturnsOk()
         {
-            var command = new CreateWebhookCommand();
+            var command = new CreateWebhookCommand()
+            {
+                Name = "web",
+                URLCallback = "https://teste.teste.com.br",
+                Events = new[]
+                {
+                    "push"
+                },
+                Config = new Dictionary<string, string>()
+                {
+                    { "url", "https://teste2.teste.com.br" }
+                },
+                Secret = "teste_teste"
+            };
+            
             var expectedResult = true;
             _mediatorMock.Setup(x => x.Send(It.IsAny<CreateWebhookCommand>(), default(CancellationToken)))
                 .ReturnsAsync(expectedResult);
@@ -56,7 +71,19 @@ public class GitHubControllerTests
         public async void UpdateWebhook_ValidRequest_ReturnsOk()
         {
             var webHookId = 1;
-            var command = new UpdateWebhookCommand();
+            var command = new UpdateWebhookCommand()
+            {
+                Active = true,
+                Events = new[]
+                {
+                    "push"
+                },
+                Config = new Dictionary<string, string>()
+                {
+                    { "url", "https://teste3.teste.com.br" }
+                }
+            };
+            
             var expectedResult = true;
             _mediatorMock.Setup(x => x.Send(It.IsAny<UpdateWebhookCommand>(), default(CancellationToken)))
                 .ReturnsAsync(expectedResult);
