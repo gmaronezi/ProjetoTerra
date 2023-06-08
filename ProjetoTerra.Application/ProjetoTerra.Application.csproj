@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\ProjetoTerra.Domain\ProjetoTerra.Domain.csproj" />
+        <ProjectReference Include="..\ProjetoTerra.Shared\ProjetoTerra.Shared.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Octokit">
+            <HintPath>..\..\..\Users\User\.nuget\packages\octokit\6.0.0\lib\netstandard2.0\Octokit.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+
+</Project>
