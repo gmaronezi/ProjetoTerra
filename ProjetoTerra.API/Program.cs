@@ -60,33 +60,7 @@ namespace ProjetoTerra.API
                     services.AddTransient<IUserAuthService, UserAuthService>();
                     services.AddScoped<UserManager<ApplicationUser>>();
 
-                    // Configurar autenticação JWT
                     var configuration = hostContext.Configuration;
-
-                    var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
-                    services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
-
-                    var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
-                    services.AddAuthentication(options =>
-                        {
-                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                        })
-                        .AddJwtBearer(options =>
-                        {
-                            options.RequireHttpsMetadata = false;
-                            options.SaveToken = true;
-                            options.TokenValidationParameters = new TokenValidationParameters
-                            {
-                                ValidateIssuer = true,
-                                ValidateAudience = true,
-                                ValidateIssuerSigningKey = true,
-                                ValidIssuer = jwtSettings.Issuer,
-                                ValidAudience = jwtSettings.Audience,
-                                IssuerSigningKey = new SymmetricSecurityKey(key),
-                                ClockSkew = TimeSpan.Zero
-                            };
-                        });
                     
                     var databaseName = configuration.GetSection("MongoDB")["DatabaseName"];
                     var connectionString = configuration.GetConnectionString("MongoDbConnection");
@@ -137,6 +111,33 @@ namespace ProjetoTerra.API
 
                         return githubClient;
                     });
+                    
+                    // Configurar autenticação JWT
+                    var jwtSettings = configuration.GetSection("Jwt").Get<JwtSettings>();
+                    services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+
+                    var key = Encoding.ASCII.GetBytes(jwtSettings.SecretKey);
+                    services.AddAuthentication(options =>
+                        {
+                            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                        })
+                        .AddJwtBearer(options =>
+                        {
+                            options.RequireHttpsMetadata = false;
+                            options.SaveToken = true;
+                            options.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidateIssuer = true,
+                                ValidateAudience = true,
+                                ValidateIssuerSigningKey = true,
+                                ValidIssuer = jwtSettings.Issuer,
+                                ValidAudience = jwtSettings.Audience,
+                                IssuerSigningKey = new SymmetricSecurityKey(key),
+                                ClockSkew = TimeSpan.Zero
+                            };
+                        });
+
                     
                     // Configurar Swagger
                     services.AddSwaggerGen(c =>

@@ -24,9 +24,14 @@ public class GitHubControllerTests
         [Fact]
         public async void CreateRepository_ValidRequest_ReturnsOk()
         {
-            var command = new CreateGitRepositoryCommand();
+            var command = new CreateGitRepositoryCommand()
+            {
+                RepositoryName = RepositoryName,
+                Description = "Teste",
+                Private = true
+            };
             var expectedResult = true;
-            _mediatorMock.Setup(x => x.Send(It.IsAny<CreateGitRepositoryCommand>(), default(CancellationToken)))
+            _mediatorMock.Setup(x => x.Send(command, default(CancellationToken)))
                 .ReturnsAsync(expectedResult);
 
             var result = await _controller.CreateRepository(command);

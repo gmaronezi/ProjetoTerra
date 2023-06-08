@@ -23,6 +23,7 @@ public class GitHubController : ControllerBase
     [HttpPost("repository")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateRepository([FromBody] CreateGitRepositoryCommand command)
     {
         var result = await _mediator.Send(command);
@@ -33,6 +34,7 @@ public class GitHubController : ControllerBase
     [HttpPost("webhook/{repositoryName}")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> CreateWebhook([FromRoute] string repositoryName, [FromBody] CreateWebhookCommand command)
     {
         var result = await _mediator.Send(command.SetRepositoryName(repositoryName));
@@ -43,6 +45,7 @@ public class GitHubController : ControllerBase
     [HttpPut("webhook/{repositoryName}/{webHookId}")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> UpdateWebhook(
         [FromRoute(Name = "repositoryName")] string repositoryName, 
         [FromRoute(Name = "webHookId")] int webHookId, 
@@ -57,6 +60,7 @@ public class GitHubController : ControllerBase
     [HttpGet("branchs/{repositoryName}")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetBranchs(
         string repositoryName,
         [FromQuery(Name = "pagina")] int page = 1,
@@ -70,6 +74,7 @@ public class GitHubController : ControllerBase
     [HttpGet("webhooks/{repositoryName}")]
     [ProducesResponseType(typeof(IActionResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(FailedResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(IActionResult), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetWebhooks(
         string repositoryName,
         [FromQuery(Name = "pagina")] int page = 1,
